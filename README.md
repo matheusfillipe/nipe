@@ -24,3 +24,25 @@ If you want to use a suffix other than `.txt` for the temporary file, you can us
 command1 | nipe --suffix .html | command2
 ```
 That will tell your editor to use the `.html` suffix instead of the default `.txt`.
+
+## As clipboard editor
+
+If you want to use nipe as a clipboard editor, you can use the `--clipboard` option.
+
+```sh
+nipe --clipboard
+```
+
+This is equivalent of:
+
+```sh
+xclip -o | nipe | xclip
+```
+
+## Trimming text
+To avoid trailing newlines, you can use the `--trim` option.
+
+```sh
+command1 | nipe --trim | command2
+nipe --trim --clipboard
+```

@@ -20,7 +20,7 @@ struct Args {
     /// Instead of stdout and stdin use the system's clipboard. Useful for using your text editor
     /// as a clipboard editor.
     #[clap(short, long)]
-    clipboard_editor: bool,
+    clipboard: bool,
 
     /// Remove empty lines or whitespaces around the text.
     #[clap(short, long)]
@@ -92,7 +92,7 @@ fn clipboard_editor(args: Args) {
 
 fn main() {
     let args = Args::parse();
-    if args.clipboard_editor {
+    if args.clipboard {
         clipboard_editor(args);
     } else {
         vipe(args);
