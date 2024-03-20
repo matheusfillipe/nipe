@@ -46,3 +46,7 @@ To avoid trailing newlines, you can use the `--trim` option.
 command1 | nipe --trim | command2
 nipe --trim --clipboard
 ```
+
+## TODO
+- [ ] Add tests
+- [ ] Guess programming language from buffer content when `--suffix` is not provided

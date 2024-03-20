@@ -25,6 +25,10 @@ struct Args {
     /// Remove empty lines or whitespaces around the text.
     #[clap(short, long)]
     trim: bool,
+
+    /// Editor to use. Defaults to $EDITOR or vi if environment variable is not set.
+    #[clap(short, long)]
+    editor: Option<String>,
 }
 
 impl Args {
@@ -41,14 +45,17 @@ impl Args {
     }
 }
 
-fn temp_editor(buffer: String, suffix: &str) -> String {
+fn temp_editor(buffer: String, args: &Args) -> String {
     let mut temp_file = Builder::new()
-        .suffix(&format!(".{}", suffix))
+        .suffix(&format!(".{}", args.get_suffix()))
         .tempfile()
         .expect("Failed to create temporary file");
     writeln!(temp_file, "{}", buffer).expect("Failed to write to temporary file");
 
-    let editor = env::var("EDITOR").unwrap_or_else(|_| String::from("vi"));
+    let editor = args
+        .editor
+        .clone()
+        .unwrap_or(env::var("EDITOR").unwrap_or(String::from("vi")));
 
     let status = Command::new(editor)
         .arg(temp_file.path())
@@ -74,7 +81,7 @@ fn vipe(args: Args) {
     let mut buffer = String::new();
     match io::stdin().read_to_string(&mut buffer) {
         Ok(_) => {
-            let output = temp_editor(buffer, args.get_suffix());
+            let output = temp_editor(buffer, &args);
             io::stdout()
                 .write_all(args.get_output(output).as_bytes())
                 .unwrap();
@@ -86,7 +93,7 @@ fn vipe(args: Args) {
 fn clipboard_editor(args: Args) {
     let mut clipboard = Clipboard::new().unwrap();
     let buffer = clipboard.get_text().unwrap();
-    let output = temp_editor(buffer, args.get_suffix());
+    let output = temp_editor(buffer, &args);
     clipboard.set_text(args.get_output(output)).unwrap();
 }
 
