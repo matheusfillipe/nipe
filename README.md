@@ -1,6 +1,6 @@
 # NIPE
 
-Nipe is a vipe clone in rust because why not. Stands for "not vipe" because "viper" is already taken.
+Nipe is a vipe clone in rust because why not. Stands for "not vipe" because "viper" and other good names are already taken.
 
 Nipe allows you to run your editor in the middle of a unix pipeline and edit the data that is being piped between programs. Your editor will have the full
 data being piped from command1 loaded into it, and when you close it, that data will be piped into command2.
